@@ -110,3 +110,29 @@ Trades: roofing, exterior_siding_paint, windows_doors, carpentry_porch_stairs,
 interior_drywall_flooring, electrical, plumbing, hvac, cleanup_junk_lawn, tree,
 concrete_paving, drainage, pest_control, demolition, appliances. The code →
 trade mapping is `TRADES` in `leads/trades.py`.
+
+## Property maintenance / make-ready leads with owners (recommended)
+
+Pulls live data from the city's public ArcGIS services (violations + the
+property-maintenance occupancy layer, which carries the PVA owner name and
+mailing address), so there's no export link to expire:
+
+```bash
+python -m leads.trades --fetch --trade property_maintenance -o output/pm-leads.csv
+```
+
+That writes two files:
+
+- `pm-leads.csv`: one row per property with open handyman/make-ready items
+  (cleanup, exterior surfaces, paint, windows, doors, porches, steps, fences,
+  drywall, floors, cabinets, fixture-level plumbing, smoke detectors,
+  appliances), plus **owner, owner type, owner mailing address** and whether
+  the owner is absentee (mails somewhere else = landlord/investor).
+- `pm-leads-landlords.csv`: owners with 2+ such properties, grouped by mailing
+  address so one operator's multiple LLCs show up as one pitch.
+
+Government-owned properties (Metro, Housing Authority, Landbank) are dropped
+unless you pass `--include-government`; they hire through bids, not cold outreach.
+
+Run `python -m leads.louisville fetch` alone to just refresh `data/`. Owner
+names are the last PVA owner the city has on file and can lag recent sales.

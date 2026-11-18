@@ -59,6 +59,8 @@ class Property:
     violations: dict[str, str] = field(default_factory=dict)       # code -> short name
     unresolved: set[str] = field(default_factory=set)
     addresses: set[str] = field(default_factory=set)   # >1 means apartments/units on one parcel
+    owner: str = ""
+    owner_address: str = ""
     # code -> (date, item status) from the most recent visit that listed it
     code_status: dict[str, tuple[datetime | None, str]] = field(default_factory=dict)
 
