@@ -170,7 +170,7 @@ def back_html(cfg: dict, m: dict) -> str:
     e = html.escape
     others = m["other_properties"]
     others_txt = (f"<p>Metro also has open items on {others} of your other Louisville "
-                  f"propert{'y' if others == 1 else 'ies'}. We can handle those too.</p>") if others else ""
+                  f"propert{'y' if others == 1 else 'ies'}.</p>") if others else ""
     items = "".join(f"<li>{e(i)}</li>" for i in m["items"])
     return f"""<html><head><meta charset="utf-8"><style>
 *{{margin:0;padding:0;box-sizing:border-box}}
@@ -187,7 +187,7 @@ ul{{margin:.06in 0 .06in .18in}}
 <ul>{items}</ul>
 {others_txt}
 <p>We handle exactly this work for owners and landlords across Louisville Metro: repairs, cleanouts and make-ready turns, usually within the week.</p>
-<p class="sig"><b>{e(b['name'])}</b><br>{e(b['phone'])} &middot; {e(b.get('website', '') or b.get('email', ''))}</p>
+<p class="sig"><b>{e(b['name'])}</b><br>{" &middot; ".join(e(x) for x in (b['phone'], b.get('website') or b.get('email')) if x)}</p>
 </div>
 <div class="fine">Private business advertisement. Not affiliated with Louisville Metro Government.
 Violation info is from Metro's public open data.</div>

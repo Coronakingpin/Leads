@@ -1,7 +1,7 @@
 # Cold email sequence: property maintenance / make-ready
 
 Built for Instantly or Smartlead. `{{variables}}` match the columns in
-`output/email-campaign.csv`. Replace `[Your Name]`, `[Business]`, `[Phone]`.
+`output/email-campaign.csv`. Replace `[Your Name]` with the sender name.
 
 Ground rules:
 - Send from a **separate domain** (not your main one, never a personal Gmail),
@@ -28,8 +28,8 @@ the items are cleared before the reinspection.
 Want me to swing by and give you a price?
 
 [Your Name]
-[Business] · [Phone]
-[Business street address]
+Outta The Madness LLC · (502) 808-2060
+10401 Linn Station Rd, Suite 330, Louisville, KY 40223
 Reply "no thanks" and I won't email again.
 
 ---
@@ -44,7 +44,7 @@ Quick follow-up. Metro's deadlines on these tend to come fast, and fines stack p
 visit. If it helps, I can send photos and a fixed price for the {{repair_items_short}}
 before anyone has to meet us there.
 
-[Your Name] · [Phone]
+[Your Name] · (502) 808-2060
 
 ---
 
@@ -60,7 +60,7 @@ property, with photos after each one.
 
 Worth a 10-minute call?
 
-[Your Name] · [Phone]
+[Your Name] · (502) 808-2060
 
 ---
 
@@ -71,6 +71,6 @@ Worth a 10-minute call?
 Hi {{first_name|there}},
 
 I'll stop here. If you ever need a make-ready turn, repairs or a cleanout
-anywhere in Louisville Metro, my number is [Phone].
+anywhere in Louisville Metro, my number is (502) 808-2060.
 
 [Your Name]

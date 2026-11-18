@@ -1,0 +1,21 @@
+[business]
+name = "Outta The Madness LLC"
+tagline = "Property maintenance & make-ready - all of Louisville Metro"
+phone = "(502) 808-2060"
+email = ""
+website = ""
+# Return address printed on postcards (required by USPS / Lob)
+address_line1 = "10401 Linn Station Rd"
+address_line2 = "Suite 330"
+city = "Louisville"
+state = "KY"
+zip = "40223"
+
+[postcards]
+size = "4x6"            # 4x6, 6x9 or 6x11
+max_per_run = 100        # hard cap so a bad run can't drain your account
+skip_days = 30           # don't re-mail the same mailing address within this many days
+min_score = 0            # only mail leads at or above this score
+
+[email]
+sender_name = ""

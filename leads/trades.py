@@ -239,7 +239,7 @@ def landlords(rows: list[dict[str, str]], min_properties: int = 2) -> list[dict[
     for props in groups.values():
         if len(props) < min_properties:
             continue
-        names = sorted({r["owner"] for r in props}, key=str.upper)
+        names = sorted({r["owner"] for r in props}, key=lambda n: (n.upper(), n.isupper(), n))
         first: dict[str, str] = {}
         for n in names:
             first.setdefault(n.upper(), n)
