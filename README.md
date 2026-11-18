@@ -136,3 +136,34 @@ unless you pass `--include-government`; they hire through bids, not cold outreac
 
 Run `python -m leads.louisville fetch` alone to just refresh `data/`. Owner
 names are the last PVA owner the city has on file and can lag recent sales.
+
+## Outreach: postcards + email
+
+### Postcards (Lob)
+
+```bash
+cp campaign.example.toml campaign.toml      # fill in business name, phone, return address
+python -m leads.postcards output/pm-leads.csv                       # preview only, sends nothing
+LOB_API_KEY=test_... python -m leads.postcards output/pm-leads.csv --send          # free test
+LOB_API_KEY=live_... python -m leads.postcards output/pm-leads.csv --send --live   # real mail
+```
+
+One card per owner mailing address, naming their property and the cited items
+in plain English. `max_per_run` caps spend; `output/postcards-sent.csv` logs
+every live send and the same address isn't re-mailed within `skip_days`.
+Preview writes `output/postcards-preview.csv` and `output/postcard-proof.html`.
+
+### Email (skip trace -> Instantly/Smartlead)
+
+The city data has no emails, so:
+
+```bash
+python -m leads.outreach skiptrace output/pm-leads.csv              # -> output/skiptrace-upload.csv
+# upload that to BatchSkipTracing / REISkip / etc., download their results CSV
+python -m leads.outreach campaign output/pm-leads.csv results.csv   # -> output/email-campaign.csv
+```
+
+Import `email-campaign.csv` into a cold-email tool and use the sequence in
+`campaign/email-sequence.md`. For LLC owners, find the real person on the
+Kentucky Secretary of State business search first; known contacts for the
+biggest operators are in `campaign/landlord-contacts.csv`.

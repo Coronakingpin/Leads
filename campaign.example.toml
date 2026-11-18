@@ -1,0 +1,23 @@
+# Copy to campaign.toml and fill in. campaign.toml is gitignored.
+
+[business]
+name = "Your Business Name"
+tagline = "Property maintenance & make-ready - all of Louisville Metro"
+phone = "(502) 555-0100"
+email = "hello@yourdomain.com"
+website = "yourdomain.com"
+# Return address printed on postcards (required by USPS / Lob)
+address_line1 = "123 Main St"
+address_line2 = ""
+city = "Louisville"
+state = "KY"
+zip = "40202"
+
+[postcards]
+size = "4x6"            # 4x6, 6x9 or 6x11
+max_per_run = 100        # hard cap so a bad run can't drain your account
+skip_days = 30           # don't re-mail the same mailing address within this many days
+min_score = 0            # only mail leads at or above this score
+
+[email]
+sender_name = "Your Name"

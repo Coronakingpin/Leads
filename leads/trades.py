@@ -90,7 +90,10 @@ GOVERNMENT = re.compile(r"LOUISVILLE METRO|LOUISVILLE/JEFFERSON|HOUSING AUTHORIT
 COMPANY = re.compile(r"\b(LLC|L L C|INC|CORP|CORPORATION|LP|LLP|LTD|TRUST|TRUSTEE|PROPERTIES|PROPERTY|"
                      r"HOLDINGS|INVESTMENTS?|REALTY|RENTALS?|HOMES|COMPANY|CO|PARTNERS|PARTNERSHIP|"
                      r"GROUP|BANK|CHURCH|MINISTRIES|ASSOCIATION|ASSN|MANAGEMENT|MGMT|"
-                     r"VENTURES|CAPITAL|ENTERPRISES|DEVELOPMENT|APARTMENTS|MULTIFAMILY)\b", re.I)
+                     r"VENTURES|CAPITAL|ENTERPRISES|DEVELOPMENT|APARTMENTS|MULTIFAMILY|HOUSING|VILLAGE|"
+                     r"ESTATES|TOWNHOMES|HOLDING|FUND|SFR|BORROWER|OWNER|ASSETS?|RESIDENTIAL|"
+                     r"REAL ESTATE|LEGACY|LIMITED|COMMUNITY|FOUNDATION|SOLUTIONS|SERVICES|"
+                     r"INVESTORS|REVITALIZATION|LAND|PLACE)\b|\d", re.I)
 ESTATE = re.compile(r"\b(HEIRS|ESTATE|DEVISEES|DECEASED)\b", re.I)
 
 
@@ -99,10 +102,10 @@ def owner_type(owner: str) -> str:
         return ""
     if GOVERNMENT.search(owner):
         return "government"
+    if COMPANY.search(owner):        # before ESTATE so "Real Estate Investments" is a company
+        return "company/LLC"
     if ESTATE.search(owner):
         return "estate/heirs"
-    if COMPANY.search(owner):
-        return "company/LLC"
     return "individual"
 
 
@@ -228,15 +231,19 @@ def landlords(rows: list[dict[str, str]], min_properties: int = 2) -> list[dict[
     for r in rows:
         if not r["owner"] or r["owner_type"] == "government":
             continue
-        key = norm_address(r["owner_mailing_address"]) + "|" + r["owner_mailing_address"][-10:] \
-            if r["owner_mailing_address"] else r["owner"].upper()
+        mail = r["owner_mailing_address"]
+        known = mail and "ADDRESS UNKNOWN" not in mail.upper()
+        key = norm_address(mail) + "|" + mail[-10:] if known else r["owner"].upper()
         groups.setdefault(key, []).append(r)
     out = []
     for props in groups.values():
         if len(props) < min_properties:
             continue
         names = sorted({r["owner"] for r in props}, key=str.upper)
-        names = list({n.upper(): n for n in names}.values())
+        first: dict[str, str] = {}
+        for n in names:
+            first.setdefault(n.upper(), n)
+        names = list(first.values())
         out.append({
             "owner_names": "; ".join(names),
             "owner_type": ", ".join(sorted({r["owner_type"] for r in props})),
