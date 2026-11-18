@@ -90,3 +90,23 @@ Score weights are in `SCORE` at the top of `leads/violations.py`; tweak them to
 fit what you're looking for. The export has **no owner names or contact
 info**: only address, parcel ID, district and coordinates. Owner lookup is a
 separate step (parcel ID → Jefferson County PVA records).
+
+## Contractor leads by trade
+
+`leads.trades` finds properties where the city has ordered repairs in a trade
+and the work is still open, ranked by how pressured the owner is (citations,
+court, fines, fresh deadlines) and how recently the inspector was out.
+Properties whose latest case status is Closed are dropped, and each violation
+uses its status from the most recent visit, so items already fixed don't show up.
+
+```bash
+python -m leads.trades export.csv                         # one CSV per trade in output/trades/
+python -m leads.trades export.csv --trade roofing         # just roofing
+python -m leads.trades export.csv --trade roofing --trade exterior_siding_paint --zip 40210 -o output/my-leads.csv
+python -m leads.trades --list-trades                      # trades and the violation codes in each
+```
+
+Trades: roofing, exterior_siding_paint, windows_doors, carpentry_porch_stairs,
+interior_drywall_flooring, electrical, plumbing, hvac, cleanup_junk_lawn, tree,
+concrete_paving, drainage, pest_control, demolition, appliances. The code →
+trade mapping is `TRADES` in `leads/trades.py`.

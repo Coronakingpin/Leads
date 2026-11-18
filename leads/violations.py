@@ -59,6 +59,8 @@ class Property:
     violations: dict[str, str] = field(default_factory=dict)       # code -> short name
     unresolved: set[str] = field(default_factory=set)
     addresses: set[str] = field(default_factory=set)   # >1 means apartments/units on one parcel
+    # code -> (date, item status) from the most recent visit that listed it
+    code_status: dict[str, tuple[datetime | None, str]] = field(default_factory=dict)
 
 
 def _date(value: str) -> datetime | None:
@@ -114,6 +116,10 @@ def load(path: Path) -> dict[str, Property]:
                 p.violations.setdefault(code, _short_name(row["GUIDE_ITEM_TEXT"]))
                 if row["GUIDE_ITEM_STATUS"].strip() in UNRESOLVED:
                     p.unresolved.add(code)
+                when = _date(row["G6A_G6_COMPL_DD"])
+                prev_status = p.code_status.get(code)
+                if prev_status is None or (when and (prev_status[0] is None or when >= prev_status[0])):
+                    p.code_status[code] = (when, row["GUIDE_ITEM_STATUS"].strip())
     return props
 
 
