@@ -63,3 +63,30 @@ Example: `python -m leads my_list.txt -o output/austin.csv --follow 5`
 pip install -r requirements-dev.txt
 pytest
 ```
+
+## Louisville code-violation leads
+
+`leads.violations` turns a Louisville Metro property-maintenance export
+(`PM_SiteVisit_Violations_*.csv` from the city's ArcGIS open data) into one row
+per property, scored by how distressed it looks: condemned, order to vacate,
+vacant/abandoned, emergency or citation referrals, fines, unresolved
+violations and repeat cases. Highest score first.
+
+```bash
+python -m leads.violations PM_SiteVisit_Violations.csv                  # everything still open
+python -m leads.violations export.csv --vacant-only --single-address    # vacant houses, no apartment complexes
+python -m leads.violations export.csv --zip 40211 --zip 40212 --min-score 10
+```
+
+| Flag | What it does |
+| --- | --- |
+| `--vacant-only` | Only vacant, abandoned or condemned properties |
+| `--single-address` | Skip parcels with several unit addresses (apartment complexes) |
+| `--include-closed` | Keep properties whose latest visit was Closed (dropped by default) |
+| `--zip Z` | Limit to a ZIP code (repeatable) |
+| `--min-score N` | Drop properties below this score |
+
+Score weights are in `SCORE` at the top of `leads/violations.py`; tweak them to
+fit what you're looking for. The export has **no owner names or contact
+info**: only address, parcel ID, district and coordinates. Owner lookup is a
+separate step (parcel ID → Jefferson County PVA records).
