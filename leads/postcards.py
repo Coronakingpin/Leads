@@ -177,6 +177,7 @@ def back_html(cfg: dict, m: dict) -> str:
 body{{width:6.25in;height:4.25in;font-family:Arial,Helvetica,sans-serif;color:#1d1d1d}}
 .msg{{position:absolute;top:.3in;left:.3in;width:2.75in;font-size:9.5pt;line-height:1.35}}
 .msg b{{color:#12355b}}
+.msg p+p,.msg ul+p{{margin-top:.06in}}
 ul{{margin:.06in 0 .06in .18in}}
 .sig{{margin-top:.08in;font-size:9pt}}
 .fine{{position:absolute;bottom:.2in;left:.3in;width:2.75in;font-size:6.5pt;color:#666}}
