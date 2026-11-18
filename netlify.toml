@@ -1,0 +1,13 @@
+# Netlify deploys the landing page in site/ (no build step).
+# Free plan: HTTPS on a custom domain + 100 form submissions/month.
+# After the first deploy: Site configuration -> Forms -> enable form detection,
+# then Forms -> Form notifications -> Email -> info@outtathemadness.com.
+[build]
+  publish = "site"
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
