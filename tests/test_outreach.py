@@ -46,3 +46,11 @@ def test_skiptrace_then_campaign_roundtrip(tmp_path):
     assert row["property_address"] == "5 Oak St"
     assert row["repair_items"] == "windows, toilet" and row["other_properties"] == "1"
     assert row["phone"] == "5025550101"
+
+
+def test_split_person_handles_trusts_and_couples():
+    assert split_person("Laura E Escobar Family Revoc") == ("Laura", "Escobar")
+    assert split_person("Alan & Shelby Archer Living") == ("Alan", "Archer")
+    assert split_person("Robert E Bayman Revocable Tru") == ("Robert", "Bayman")
+    assert split_person("Adams Jerome & Reonna M") == ("Jerome", "Adams")
+    assert split_person("Diehl Jerry W & Paulette") == ("Jerry", "Diehl")

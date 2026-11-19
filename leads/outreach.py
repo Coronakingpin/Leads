@@ -35,12 +35,28 @@ CAMPAIGN_COLUMNS = ["email", "first_name", "last_name", "company_name", "phone",
                     "repair_items", "repair_items_short", "other_properties", "owner_type", "lead_key"]
 
 
+TRUST_WORDS = re.compile(r"\b(TRUST|TRUS|TRU|TR|REVOC\w*|LIVING|LIVIN|LIV|FAMILY|FAMIL|FAM|SUBTRUST|"
+                         r"AMENDED|RESTATED|IRREVOCABLE|R)$|\b(TRUST|REVOC\w*|LIVING|FAMILY|FAM|SUBTRUST|AMENDED)\b",
+                         re.I)
+SUFFIXES = {"SR", "JR", "II", "III", "IV", "ETAL", "ET", "AL"}
+
+
 def split_person(owner: str) -> tuple[str, str]:
-    """PVA stores people as 'Last First Middle [Sr/Jr]'. Return (first, last)."""
-    parts = [p for p in re.split(r"\s+", owner.strip()) if p]
-    parts = [p for p in parts if p.upper().rstrip(".") not in {"SR", "JR", "II", "III", "IV", "ETAL", "ET", "AL"}]
+    """Return (first, last). PVA usually stores people as 'Last First Middle', but family
+    trusts ('Laura E Escobar Family Revoc') and couples ('Alan & Shelby Archer Living')
+    are written first-name-first."""
+    raw = owner.strip()
+    first_name_first = bool(TRUST_WORDS.search(raw)) or bool(re.match(r"^\S+\s+&\s", raw))
+    head = re.split(r"\s&\s", raw)[0] if not re.match(r"^\S+\s+&\s", raw) else raw
+    parts = [p for p in re.split(r"\s+", head) if p and p != "&"]
+    parts = [p for p in parts if p.upper().rstrip(".") not in SUFFIXES]
+    if first_name_first:
+        words = [p for p in parts if not TRUST_WORDS.fullmatch(p)]
+        names = [w for w in words if len(w.rstrip(".")) > 1]
+        if len(names) >= 2:
+            return names[0].title(), names[-1].title()
     if len(parts) < 2:
-        return "", owner.title()
+        return "", raw.title()
     return parts[1].title(), parts[0].title()
 
 

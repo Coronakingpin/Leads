@@ -167,3 +167,15 @@ Import `email-campaign.csv` into a cold-email tool and use the sequence in
 `campaign/email-sequence.md`. For LLC owners, find the real person on the
 Kentucky Secretary of State business search first; known contacts for the
 biggest operators are in `campaign/landlord-contacts.csv`.
+
+### Email lookup workbook
+
+```bash
+python -m leads.lookup output/pm-leads.csv     # -> output/email-lookup.xlsx
+```
+
+One row per owner, tiered (A: multi-property landlords, B: other landlords and
+companies, C: owner-occupants), with the exact name and mailing address to
+search and one-tap links: TruePeopleSearch / FastPeopleSearch for people,
+Kentucky SOS / OpenCorporates for LLCs. Fill in Email/Phone, export the
+"All owners" sheet as CSV, and merge it with `python -m leads.outreach campaign`.
