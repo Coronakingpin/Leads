@@ -188,7 +188,7 @@ ul{{margin:.06in 0 .06in .18in}}
 <ul>{items}</ul>
 {others_txt}
 <p>We handle exactly this work for owners and landlords across Louisville Metro: repairs, cleanouts and make-ready turns, usually within the week.</p>
-<p class="sig"><b>{e(b['name'])}</b><br>{" &middot; ".join(e(x) for x in (b['phone'], b.get('website') or b.get('email')) if x)}</p>
+<p class="sig"><b>{e(b['name'])}</b><br>{" &middot; ".join(e(x) for x in (b['phone'], b.get('website')) if x)}{"<br>" + e(b['email']) if b.get('email') else ""}</p>
 </div>
 <div class="fine">Private business advertisement. Not affiliated with Louisville Metro Government.
 Violation info is from Metro's public open data.</div>

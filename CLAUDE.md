@@ -23,7 +23,7 @@ python -m leads.postcards output/louisville-property-maintenance-leads.csv   # p
 ## Website
 - `site/` = landing page, deployed by Netlify (project "outtathemadness") on every push to `main`.
 - Quote form = Netlify Forms (form name "quote"); verified working. Email notification to info@ should be set in Netlify Forms → Notifications.
-- DNS (registered agent "Mark", Kentucky Registered Agent): www CNAME → outtathemadness.netlify.app; bare domain forwards to www.
+- DNS (registered agent "Mark", Kentucky Registered Agent): www CNAME → outtathemadness.netlify.app; bare domain is primary (www redirects to it).
   Never touch MX/SPF/DMARC. Bare domain A record -> 75.2.60.5 (Netlify). HTTPS live since 2026-11-19.
 - Ignore the Netlify Agent's "1 open" change; don't publish Agent changes over the repo.
 
