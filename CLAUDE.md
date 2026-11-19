@@ -24,11 +24,11 @@ python -m leads.postcards output/louisville-property-maintenance-leads.csv   # p
 - `site/` = landing page, deployed by Netlify (project "outtathemadness") on every push to `main`.
 - Quote form = Netlify Forms (form name "quote"); verified working. Email notification to info@ should be set in Netlify Forms → Notifications.
 - DNS (registered agent "Mark", Kentucky Registered Agent): www CNAME → outtathemadness.netlify.app; bare domain forwards to www.
-  Never touch MX/SPF/DMARC. HTTPS cert pending as of 2026-11-19 (needs www.outtathemadness.com added in Netlify domains).
+  Never touch MX/SPF/DMARC. Bare domain A record -> 75.2.60.5 (Netlify). HTTPS live since 2026-11-19.
 - Ignore the Netlify Agent's "1 open" change; don't publish Agent changes over the repo.
 
 ## Status / next steps
-- [ ] Confirm https://www.outtathemadness.com loads the site, then add website to postcards (`campaign.toml` website) + email signature.
+- [x] Site live at https://outtathemadness.com; website on postcards + email signature.
 - [ ] Lob test key run, then mail top 100 postcards.
 - [ ] Outreach email: buy 1-2 lookalike domains + Google Workspace inboxes, warm up 3 weeks (don't cold-email from outtathemadness.com).
 - [ ] User looking up emails manually (Tier A first); merge with `python -m leads.outreach campaign`.

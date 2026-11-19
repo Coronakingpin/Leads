@@ -28,7 +28,7 @@ the items are cleared before the reinspection.
 Want me to swing by and give you a price?
 
 [Your Name]
-Outta The Madness LLC · (502) 808-2060
+Outta The Madness LLC · (502) 808-2060 · outtathemadness.com
 10401 Linn Station Rd, Suite 330, Louisville, KY 40223
 Reply "no thanks" and I won't email again.
 
