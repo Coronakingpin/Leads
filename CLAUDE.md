@@ -31,7 +31,13 @@ python -m leads.postcards output/louisville-property-maintenance-leads.csv   # p
 - [x] Site live at https://outtathemadness.com; website on postcards + email signature.
 - [ ] Lob test key run, then mail top 100 postcards.
 - [ ] Outreach email: buy 1-2 lookalike domains + Google Workspace inboxes, warm up 3 weeks (don't cold-email from outtathemadness.com).
-- [ ] User looking up emails manually (Tier A first); merge with `python -m leads.outreach campaign`.
+- [ ] User looking up emails manually (Tier A first) in Google Sheet
+  "Outta The Madness - Owner Email Lookup" (id `1dxvbej9kuHzg--uxPyOtnkFx9rZzN_ek_HtemANH0Gg`).
+  User fills ONLY the "All owners" tab (Email/Phone/Found via/Notes). To build the campaign: read that tab
+  with the Google Sheets connector, save as CSV, run `python -m leads.outreach campaign <leads.csv> <that.csv>`
+  (matches rows by the Lead Key column). Re-generating the sheet would overwrite their notes: don't.
+- Email host for outtathemadness.com is the registered agent's bundled service (businessidentity.llc):
+  not for cold outreach. Website has no real photos yet; add job photos when the user has them.
 
 ## Rules
 - Git: work on a branch, push to `main` only when the user approves (Netlify deploys main).
