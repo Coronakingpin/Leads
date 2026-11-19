@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
+import re
 from pathlib import Path
 from urllib.parse import quote, quote_plus
 
@@ -208,9 +210,135 @@ def main(argv: list[str] | None = None) -> int:
     _sheet(wb, "Companies", [r for r in rows if r["Owner type"] == "Company"])
     args.output.parent.mkdir(parents=True, exist_ok=True)
     wb.save(args.output)
+    write_html(rows, args.output.with_suffix(".html"))
     tiers = {t: sum(1 for r in rows if r["Tier"] == t) for t in "ABC"}
-    print(f"{len(rows)} owners (A {tiers['A']}, B {tiers['B']}, C {tiers['C']}) -> {args.output}")
+    print(f"{len(rows)} owners (A {tiers['A']}, B {tiers['B']}, C {tiers['C']}) -> {args.output} (+ {args.output.with_suffix('.html')} for phones)")
     return 0
+
+
+
+def address_links(r: dict) -> tuple[str, str]:
+    street = r["Mailing Address"]
+    csz = f"{r['Mailing City']}, {r['Mailing State']} {r['Mailing Zip']}".strip()
+    tps = ("https://www.truepeoplesearch.com/resultaddress?streetaddress=" + quote(street)
+           + "&citystatezip=" + quote(csz))
+    slug = lambda s: quote(re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-"))
+    fps = (f"https://www.fastpeoplesearch.com/address/{slug(street)}_"
+           f"{slug(r['Mailing City'] + ' ' + r['Mailing State'] + ' ' + r['Mailing Zip'])}")
+    return tps, fps
+
+
+def write_html(rows: list[dict], path: Path) -> None:
+    data = []
+    for r in rows:
+        tps_addr, fps_addr = address_links(r)
+        links = []
+        if r["People search 1"]:
+            links += [["TruePeople (name)", r["People search 1"]], ["FastPeople (name)", r["People search 2"]]]
+        links += [["TruePeople (address)", tps_addr], ["FastPeople (address)", fps_addr]]
+        if r["KY business record"]:
+            links += [["KY business record", r["KY business record"]], ["OpenCorporates", r["OpenCorporates"]]]
+        links += [["Google", r["Google"]]]
+        data.append({
+            "p": r["Priority"], "t": r["Tier"], "n": r["Search as"], "o": r["Owner (as recorded)"],
+            "ty": r["Owner type"], "a": r["Mailing Address"],
+            "c": f"{r['Mailing City']}, {r['Mailing State']} {r['Mailing Zip']}",
+            "k": r["Lead Key"], "pr": r["Properties"], "tp": r["Top property"], "i": r["Open items"],
+            "kn": r["Known contact"], "l": r["Landlord?"] == "yes", "links": links,
+        })
+    html_doc = HTML_TEMPLATE.replace("__DATA__", json.dumps(data, separators=(",", ":")).replace("</", "<\\/"))
+    path.write_text(html_doc, encoding="utf-8")
+
+
+HTML_TEMPLATE = r"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Owner Email Lookup</title>
+<style>
+:root{--bg:#121212;--panel:#1c1c1c;--line:#2e2e2e;--fg:#f1f1f1;--muted:#a3a3a3;--accent:#f29a2e;--chip:#262626;--done:#1f3324;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+ padding:env(safe-area-inset-top,0) max(14px,env(safe-area-inset-right,0px)) 40px max(14px,env(safe-area-inset-left,0px))}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 10px;border-bottom:1px solid var(--line)}
+h1{font-size:19px;margin:0 0 2px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 10px}
+.controls{display:flex;flex-wrap:wrap;gap:8px}
+input[type=search]{flex:1 1 220px;min-width:0;background:var(--panel);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:11px 12px;font-size:16px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--chip);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:14px}
+.seg button[aria-pressed=true]{background:var(--accent);color:#121212;border-color:var(--accent);font-weight:600}
+.count{color:var(--muted);font-size:13px;margin-top:8px}
+.list{display:grid;gap:12px;margin-top:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:8px;min-width:0}
+.card.done{background:var(--done)}
+.top{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.name{font-size:17px;font-weight:700;overflow-wrap:anywhere}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.b{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted)}
+.b.A{background:var(--accent);color:#121212;font-weight:700}
+.b.B{background:#4a3519;color:#ffd7a3}
+.rank{color:var(--muted);font-size:13px;white-space:nowrap}
+.addr{font-size:15px}
+.meta{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.known{font-size:13px;background:#2a2213;border:1px solid #4a3a1c;border-radius:8px;padding:6px 8px;overflow-wrap:anywhere}
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.links a{display:block;text-align:center;text-decoration:none;background:#2b2b2b;color:var(--fg);border:1px solid #3a3a3a;border-radius:10px;padding:11px 8px;font-size:14px;font-weight:600}
+.links a:active{background:var(--accent);color:#121212}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row button{background:transparent;color:var(--accent);border:1px solid #4a3a1c;border-radius:10px;padding:9px 12px;font-size:14px}
+.more{margin:16px auto;display:block;background:var(--accent);color:#121212;border:0;border-radius:10px;padding:12px 20px;font-weight:700;font-size:15px}
+.tip{color:var(--muted);font-size:12.5px;margin-top:10px}
+</style></head><body>
+<header>
+  <h1>Owner Email Lookup</h1>
+  <p class="sub">Outta The Madness LLC &middot; owners with open Louisville Metro violations, best first</p>
+  <div class="controls">
+    <input type="search" id="q" placeholder="Search name, address, ZIP..." aria-label="Search owners">
+    <div class="seg" id="tiers" role="group" aria-label="Tier">
+      <button data-v="A" aria-pressed="true">Tier A</button><button data-v="B" aria-pressed="false">B</button>
+      <button data-v="C" aria-pressed="false">C</button><button data-v="all" aria-pressed="false">All</button>
+    </div>
+    <div class="seg" id="types" role="group" aria-label="Owner type">
+      <button data-v="all" aria-pressed="true">Everyone</button><button data-v="Person" aria-pressed="false">People</button>
+      <button data-v="Company" aria-pressed="false">Companies</button><button data-v="todo" aria-pressed="false">Not done</button>
+    </div>
+  </div>
+  <div class="count" id="count"></div>
+</header>
+<div class="list" id="list"></div>
+<button class="more" id="more" hidden>Show more</button>
+<p class="tip">Tier A = landlords with 2+ properties or big open lists. Match results to the mailing address shown. County records list names "Last First", so try both orders. For companies, the KY business record names the manager or registered agent: search that person next. "Done" marks are saved in this browser only.</p>
+<script>
+const DATA=__DATA__;
+const LS='otm-lookup-done';
+let done={};try{done=JSON.parse(localStorage.getItem(LS)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(LS,JSON.stringify(done))}catch(e){}};
+let tier='A',type='all',q='',shown=60;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function filtered(){const t=q.toLowerCase();return DATA.filter(r=>(tier==='all'||r.t===tier)&&(type==='all'||(type==='todo'?!done[r.k]:r.ty===type))&&
+ (!t||(r.n+' '+r.o+' '+r.a+' '+r.c+' '+r.tp+' '+r.kn).toLowerCase().includes(t)))}
+function copy(text,btn){const ok=()=>{const o=btn.textContent;btn.textContent='Copied';setTimeout(()=>btn.textContent=o,1200)};
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok).catch(()=>prompt('Copy:',text))}else{prompt('Copy:',text)}}
+function render(){const rows=filtered();$('#count').textContent=rows.length+' owners'+(rows.length>shown?' (showing '+shown+')':'');
+ $('#list').innerHTML=rows.slice(0,shown).map((r,i)=>`<article class="card${done[r.k]?' done':''}" data-k="${esc(r.k)}">
+  <div class="top"><div><div class="name">${esc(r.n)}</div><div class="badges"><span class="b ${r.t}">Tier ${r.t}</span><span class="b">${esc(r.ty)}</span>${r.l?'<span class="b">Landlord</span>':''}<span class="b">${r.pr} propert${r.pr==1?'y':'ies'}</span></div></div><span class="rank">#${r.p}</span></div>
+  <div class="addr">${esc(r.a)}<br>${esc(r.c)}</div>
+  <div class="meta">Recorded as: ${esc(r.o)}<br>Top property: ${esc(r.tp)}${r.i?' &middot; '+esc(r.i):''}</div>
+  ${r.kn?`<div class="known">Already found: ${esc(r.kn)}</div>`:''}
+  <div class="links">${r.links.map(l=>`<a href="${esc(l[1])}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join('')}</div>
+  <div class="row"><button data-copy="name">Copy name</button><button data-copy="addr">Copy address</button><button data-done>${done[r.k]?'Undo done':'Mark done'}</button></div>
+ </article>`).join('');$('#more').hidden=rows.length<=shown}
+$('#list').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const card=b.closest('.card');const r=DATA.find(x=>x.k===card.dataset.k);
+ if(b.dataset.copy==='name')copy(r.n,b);else if(b.dataset.copy==='addr')copy(r.a+', '+r.c,b);
+ else if(b.hasAttribute('data-done')){if(done[r.k])delete done[r.k];else done[r.k]=1;save();render()}});
+function seg(id,set){document.querySelectorAll(id+' button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll(id+' button').forEach(x=>x.setAttribute('aria-pressed',x===b));set(b.dataset.v);shown=60;render()}))}
+seg('#tiers',v=>tier=v);seg('#types',v=>type=v);
+$('#q').addEventListener('input',e=>{q=e.target.value;shown=60;render()});
+$('#more').addEventListener('click',()=>{shown+=60;render()});
+render();
+</script></body></html>
+"""
 
 
 if __name__ == "__main__":
