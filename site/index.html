@@ -3,22 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Outta The Madness | Property Maintenance &amp; Make-Ready in Louisville, KY</title>
+<title>Louisville Property Maintenance | Outta The Madness</title>
 <meta name="description" content="Repairs, cleanouts, make-ready turnovers and code-violation fixes for landlords and property managers across Louisville Metro. Call or text (502) 808-2060.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://outtathemadness.com/">
 <meta name="theme-color" content="#121212">
-<meta property="og:title" content="Outta The Madness Property Services">
+<meta property="og:title" content="Louisville Property Maintenance | Outta The Madness">
 <meta property="og:description" content="Less madness. More handled. Property maintenance and make-ready across Louisville Metro.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Outta The Madness LLC",
+{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","@id":"https://outtathemadness.com/#business",
+ "name":"Outta The Madness LLC","alternateName":"Outta The Madness Property Services",
+ "description":"Mobile property maintenance, make-ready turnovers, cleanouts, repairs and Louisville Metro code-violation fixes for landlords and property managers. We come to you.",
  "telephone":"+1-502-808-2060","email":"info@outtathemadness.com","url":"https://outtathemadness.com/",
- "address":{"@type":"PostalAddress","streetAddress":"10401 Linn Station Rd, Suite 330","addressLocality":"Louisville","addressRegion":"KY","postalCode":"40223","addressCountry":"US"},
- "areaServed":"Louisville Metro, Jefferson County, KY"}
+ "address":{"@type":"PostalAddress","addressLocality":"Louisville","addressRegion":"KY","addressCountry":"US"},
+ "areaServed":[{"@type":"City","name":"Louisville, KY"},{"@type":"AdministrativeArea","name":"Jefferson County, KY"}],
+ "knowsAbout":["Make-ready turnovers","Rental property maintenance","Code violation repairs","Cleanouts and junk removal","Handyman repairs"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"What areas do you serve?","acceptedAnswer":{"@type":"Answer","text":"All of Louisville Metro and Jefferson County, KY. We're mobile: we come to your property, so there's no shop to visit."}},
+ {"@type":"Question","name":"Can you fix a Louisville Metro code violation before the reinspection?","acceptedAnswer":{"@type":"Answer","text":"Yes. Send us the notice or the listed items and the reinspection date. We price each item, do the work, and send before-and-after photos for your records. We're a private company, not affiliated with Louisville Metro Government."}},
+ {"@type":"Question","name":"Do you do make-ready turnovers between tenants?","acceptedAnswer":{"@type":"Answer","text":"Yes. Move-out cleaning, trash-out, paint touch-ups, drywall patches, fixture swaps and small repairs so the unit is ready to show and rent."}},
+ {"@type":"Question","name":"What work don't you do?","acceptedAnswer":{"@type":"Answer","text":"We don't do HVAC, electrical panels or wiring, gas lines, roofing or structural work. For those we'll tell you to call a licensed specialist."}},
+ {"@type":"Question","name":"How do I get a quote?","acceptedAnswer":{"@type":"Answer","text":"Call or text (502) 808-2060, or fill out the quote form with the property address and what needs doing. Photos help us price it faster."}}]}
 </script>
 <style>
 :root{
@@ -77,7 +88,7 @@ nav .call-sm{display:none}
 .hero{background:radial-gradient(1200px 600px at 85% -10%,#2a2318 0%,transparent 60%),var(--ink);color:#fff;padding:clamp(56px,9vw,104px) 0 clamp(56px,8vw,88px)}
 .hero .tag{display:flex;align-items:center;gap:1rem;font-size:.74rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#d8d8d8}
 .hero .tag:before{content:"";width:44px;height:3px;background:var(--orange)}
-.hero h1{font-size:clamp(3rem,10vw,6rem);font-weight:800;letter-spacing:-.045em;margin:1.6rem 0 1.4rem;line-height:.98}
+.hero h1{font-size:clamp(2.3rem,6.4vw,4.4rem);font-weight:800;letter-spacing:-.045em;margin:1.6rem 0 1.4rem;line-height:.98}
 .hero h1 em{font-style:normal;color:var(--orange)}
 .hero .sub{font-size:clamp(1.1rem,2.6vw,1.4rem);color:#e6e6e6;max-width:640px}
 .hero .sub2{color:var(--muted-dark);margin-top:1rem;max-width:560px;font-size:1.05rem}
@@ -169,6 +180,16 @@ legend{font-size:.86rem;font-weight:500;margin-bottom:.4rem}
 form .btn{justify-content:space-between;width:100%}
 .hp{position:absolute;left:-9999px}
 
+.faq{background:var(--paper);border-top:1px solid var(--line)}
+.faq h2{margin:1rem 0 2rem}
+.qa{max-width:820px;border-top:1px solid var(--line)}
+.qa details{border-bottom:1px solid var(--line);padding:1.2rem 0}
+.qa summary{cursor:pointer;font-weight:600;font-size:1.1rem;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary:after{content:"+";color:var(--gold);font-size:1.4rem;line-height:1}
+.qa details[open] summary:after{content:"–"}
+.qa p{color:var(--muted);margin-top:.7rem;max-width:700px}
+.qa a{color:var(--gold)}
 footer{background:#0b0b0b;color:#a7a7a7;padding:3rem 0;font-size:.9rem}
 footer .wrap{display:grid;gap:1.6rem}
 @media (min-width:760px){footer .wrap{grid-template-columns:2fr 1fr 1fr}}
@@ -212,6 +233,7 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
       <a class="hide-sm" href="#services">Services</a>
       <a class="hide-sm" href="#violations">Code violations</a>
       <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#faq">FAQ</a>
       <a class="btn btn-primary" href="#quote">Get a quote</a>
       <a class="btn btn-primary call-sm" href="tel:+15028082060" aria-label="Call (502) 808-2060"><svg class="arrow"><use href="#i-phone"/></svg>Call</a>
     </nav>
@@ -221,9 +243,9 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
 <main id="top">
 <section class="hero">
   <div class="wrap">
-    <div class="tag">Property care. Without the chaos.</div>
-    <h1>Less madness.<br>More <em>handled.</em></h1>
-    <p class="sub">Repairs, cleanouts, make-ready turnovers and code-violation fixes for the people keeping properties running.</p>
+    <div class="tag">Less madness. More handled.</div>
+    <h1>Property maintenance &amp; make-ready in <em>Louisville, KY.</em></h1>
+    <p class="sub">Repairs, cleanouts, turnovers and code-violation fixes for landlords and property managers. We come to you, anywhere in Louisville Metro.</p>
     <p class="sub2">One rental or a growing portfolio. Let's get your to-do list outta the way.</p>
     <div class="ctas">
       <a class="btn btn-primary" href="#quote">Get a quote <svg class="arrow"><use href="#i-arrow"/></svg></a>
@@ -250,8 +272,8 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
   <div class="wrap">
     <div class="svc-head">
       <div class="eyebrow">Less to juggle. More taken care of.</div>
-      <h2>A better way to tackle your property to-do list.</h2>
-      <p class="lead">You shouldn't have to chase a different contact for every job. Start with us, and let's talk through what your property needs.</p>
+      <h2>What property work do we handle?</h2>
+      <p class="lead">Turnovers, cleanouts, handyman repairs and preventive upkeep for rental and commercial properties across Louisville Metro: one contact instead of a different crew for every job.</p>
     </div>
 
     <div class="svc">
@@ -261,7 +283,7 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
         <h3>Clean spaces.<br>Fresh starts.</h3>
       </div>
       <div>
-        <p>From move-out messes to everyday commercial upkeep, get your space ready for what's next.</p>
+        <p>We clean out and turn over units after a tenant leaves, haul junk and clear overgrown yards so the property is ready to show.</p>
         <ul>
           <li><svg class="check"><use href="#i-check"/></svg>Rental move-out &amp; make-ready turnovers</li>
           <li><svg class="check"><use href="#i-check"/></svg>Cleanouts, junk &amp; debris removal</li>
@@ -279,7 +301,7 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
         <h3>The to-do list.<br>Taken care of.</h3>
       </div>
       <div>
-        <p>The small fixes and the bigger headaches. A hands-on contact to keep your property moving.</p>
+        <p>We handle the handyman list: doors, windows, drywall, paint, flooring, porches, fences and fixture swaps.</p>
         <ul>
           <li><svg class="check"><use href="#i-check"/></svg>General repairs &amp; punch lists</li>
           <li><svg class="check"><use href="#i-check"/></svg>Doors, windows, drywall, flooring &amp; paint</li>
@@ -297,7 +319,7 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
         <h3>Less reacting.<br>More planning.</h3>
       </div>
       <div>
-        <p>Catch the small stuff before it turns into a work order, a bad review or a citation.</p>
+        <p>We do scheduled walkthroughs and upkeep so small problems get fixed before they become a work order or a citation.</p>
         <ul>
           <li><svg class="check"><use href="#i-check"/></svg>Seasonal property walkthroughs &amp; checkups</li>
           <li><svg class="check"><use href="#i-check"/></svg>Filter changes, gutter clearing &amp; upkeep</li>
@@ -314,7 +336,7 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
     <div>
       <div class="eyebrow">Got a notice from Metro?</div>
       <h2>Code violation on your property?<span class="soft">We fix it before your deadline.</span></h2>
-      <p class="lead">Louisville Metro property-maintenance citations come with a reinspection date and fines that stack. Send us the notice and we'll clear the items, with photos for your records.</p>
+      <p class="lead">Yes, we fix Louisville Metro property-maintenance violations. Send us the notice, we price each item and clear them before the reinspection date, with before-and-after photos for your records.</p>
       <div class="chips">
         <span>Trash &amp; yard cleanup</span><span>Windows</span><span>Exterior doors</span><span>Porches &amp; steps</span>
         <span>Siding &amp; paint</span><span>Fences &amp; gates</span><span>Walls &amp; ceilings</span><span>Flooring</span>
@@ -336,12 +358,26 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
 <section class="dark process" id="how">
   <div class="wrap">
     <div class="eyebrow">Straightforward from the start</div>
-    <h2>A little less back-and-forth.<span class="soft">A lot less madness.</span></h2>
+    <h2>How does it work?<span class="soft">A lot less madness.</span></h2>
     <a class="btn btn-ghost" href="#quote">Let's get started <svg class="arrow"><use href="#i-arrow"/></svg></a>
     <div class="steps">
       <div class="step"><div class="n">01</div><h3>Tell us what's going on.</h3><p>Share the job, the property location, and the best time to reach you.</p></div>
       <div class="step"><div class="n">02</div><h3>We talk through the details.</h3><p>We'll ask the right questions, walk the property if needed, and put together a quote.</p></div>
       <div class="step"><div class="n">03</div><h3>Get a plan. Move forward.</h3><p>Review your quote and agree on the next steps. No guesswork about what's included.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="eyebrow">Common questions</div>
+    <h2>FAQ</h2>
+    <div class="qa">
+      <details open><summary>What areas do you serve?</summary><p>All of Louisville Metro and Jefferson County, KY. We're mobile: we come to your property, so there's no shop to visit.</p></details>
+      <details><summary>Can you fix a Louisville Metro code violation before the reinspection?</summary><p>Yes. Send us the notice or the listed items and the reinspection date. We price each item, do the work, and send before-and-after photos for your records. We're a private company, not affiliated with Louisville Metro Government.</p></details>
+      <details><summary>Do you do make-ready turnovers between tenants?</summary><p>Yes. Move-out cleaning, trash-out, paint touch-ups, drywall patches, fixture swaps and small repairs so the unit is ready to show and rent.</p></details>
+      <details><summary>What work don't you do?</summary><p>We don't do HVAC, electrical panels or wiring, gas lines, roofing or structural work. For those we'll tell you to call a licensed specialist.</p></details>
+      <details><summary>How do I get a quote?</summary><p>Call or text <a href="tel:+15028082060">(502) 808-2060</a>, or fill out the <a href="#quote">quote form</a> with the property address and what needs doing. Photos help us price it faster.</p></details>
     </div>
   </div>
 </section>
@@ -409,7 +445,7 @@ footer .small{grid-column:1/-1;border-top:1px solid #222;padding-top:1.4rem;font
 
 <footer>
   <div class="wrap">
-    <div><b>Outta The Madness LLC</b>Property maintenance, repairs and make-ready across Louisville Metro.<br>10401 Linn Station Rd, Suite 330, Louisville, KY 40223</div>
+    <div><b>Outta The Madness LLC</b>Mobile property maintenance, repairs and make-ready. We come to you anywhere in Louisville Metro.<br>Mailing address: 10401 Linn Station Rd, Suite 330, Louisville, KY 40223</div>
     <div><b>Call or text</b><a href="tel:+15028082060">(502) 808-2060</a></div>
     <div><b>Email</b><a href="mailto:info@outtathemadness.com">info@outtathemadness.com</a></div>
     <div class="small">© <span id="yr">2026</span> Outta The Madness LLC. Not affiliated with Louisville Metro Government.</div>
